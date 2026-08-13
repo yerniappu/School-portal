@@ -1,0 +1,162 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("./Images/school-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+}
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.brand {
+    max-width: 420px;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.brand h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.brand p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.auth-box {
+    width: 420px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tab {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.tab.active {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.form {
+    display: none;
+}
+
+.form.active {
+    display: block;
+}
+
+.form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #007bff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #005ec2;
+}
+
+.extra-links {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.extra-links a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.message {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: bold;
+    min-height: 20px;
+    color: green;
+}
+
+@media (max-width: 800px) {
+    .page {
+        flex-direction: column;
+        padding-top: 60px;
+    }
+
+    .brand {
+        text-align: center;
+    }
+
+    .brand h1 {
+        font-size: 2.3rem;
+    }
+
+    .auth-box {
+        width: 100%;
+        max-width: 420px;
+    }
+}

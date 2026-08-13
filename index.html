@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Portal</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="page">
+        <div class="brand">
+            <h1>Welcome to School Portal</h1>
+            <p>Manage classes, students, and academic updates with ease.</p>
+        </div>
+
+        <div class="auth-box">
+            <div class="tab-buttons">
+                <button class="tab active" type="button" data-form="login">Login</button>
+                <button class="tab" type="button" data-form="signup">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="form active">
+                <h2>Login</h2>
+
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" type="email" placeholder="Enter your email" required>
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" type="password" placeholder="Enter your password" required>
+
+                <button type="submit" class="submit-btn">Login</button>
+
+                <div class="extra-links">
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </form>
+
+            <form id="signupForm" class="form">
+                <h2>Create Account</h2>
+
+                <label for="signupName">Full Name</label>
+                <input id="signupName" type="text" placeholder="Enter your full name" required>
+
+                <label for="signupEmail">Email</label>
+                <input id="signupEmail" type="email" placeholder="Enter your email" required>
+
+                <label for="signupPassword">Password</label>
+                <input id="signupPassword" type="password" placeholder="Create a password" required>
+
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+
+            <p id="message" class="message"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
