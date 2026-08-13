@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("https://static.vecteezy.com/system/resources/previews/008/734/924/non_2x/cartoon-group-of-elementary-school-kids-in-the-school-yard-vector.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        .brand {
+            max-width: 420px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .brand p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .auth-box {
+            width: 420px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            background: transparent;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .tab.active {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #007bff;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #005ec2;
+        }
+
+        .extra-links {
+            margin-top: 18px;
+            text-align: center;
+        }
+
+        .extra-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .message {
+            margin-top: 16px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 20px;
+            color: green;
+        }
+
+        @media (max-width: 800px) {
+            .page {
+                flex-direction: column;
+                padding-top: 60px;
+            }
+
+            .brand {
+                text-align: center;
+            }
+
+            .brand h1 {
+                font-size: 2.3rem;
+            }
+
+            .auth-box {
+                width: 100%;
+                max-width: 420px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="brand">
+            <h1>Welcome to School Portal</h1>
+            <p>Manage classes, students, and academic updates with ease.</p>
+        </div>
+
+        <div class="auth-box">
+            <div class="tab-buttons">
+                <button class="tab active" type="button" data-form="login">Login</button>
+                <button class="tab" type="button" data-form="signup">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="form active">
+                <h2>Login</h2>
+
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" type="email" placeholder="Enter your email" required>
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" type="password" placeholder="Enter your password" required>
+
+                <button type="submit" class="submit-btn">Login</button>
+
+                <div class="extra-links">
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </form>
+
+            <form id="signupForm" class="form">
+                <h2>Create Account</h2>
+
+                <label for="signupName">Full Name</label>
+                <input id="signupName" type="text" placeholder="Enter your full name" required>
+
+                <label for="signupId">ID Card Number</label>
+                <input id="signupId" type="text" placeholder="Enter ID card number" required>
+
+                <label for="signupClass">Class</label>
+                <select id="signupClass" required>
+                    <option value="">Select Class</option>
+                    <option value="1st Grade">1st Grade</option>
+                    <option value="2nd Grade">2nd Grade</option>
+                    <option value="3rd Grade">3rd Grade</option>
+                    <option value="4th Grade">4th Grade</option>
+                    <option value="5th Grade">5th Grade</option>
+                    <option value="6th Grade">6th Grade</option>
+                    <option value="7th Grade">7th Grade</option>
+                    <option value="8th Grade">8th Grade</option>
+                    <option value="9th Grade">9th Grade</option>
+                    <option value="10th Grade">10th Grade</option>
+                </select>
+
+                <label for="signupPhone">Phone Number</label>
+                <input id="signupPhone" type="tel" placeholder="Enter phone number" required>
+
+                <label for="signupEmail">Email</label>
+                <input id="signupEmail" type="email" placeholder="Enter your email" required>
+
+                <label for="signupPassword">Password</label>
+                <input id="signupPassword" type="password" placeholder="Create a password" required>
+
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+
+            <p id="message" class="message"></p>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll(".tab");
+        const forms = document.querySelectorAll(".form");
+        const message = document.getElementById("message");
+
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                const target = tab.dataset.form;
+
+                tabs.forEach((btn) => btn.classList.remove("active"));
+                tab.classList.add("active");
+
+                forms.forEach((form) => {
+                    form.classList.toggle("active", form.id === `${target}Form`);
+                });
+            });
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            message.textContent = "Login successful!";
+            message.style.color = "green";
+        });
+
+        document.getElementById("signupForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            message.textContent = "Account created successfully!";
+            message.style.color = "green";
+        });
+    </script>
+</body>
+</html>
