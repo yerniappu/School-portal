@@ -161,6 +161,97 @@
             display: block;
         }
 
+        .profile-box {
+            display: none;
+            width: min(620px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.94);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .profile-box.visible {
+            display: block;
+        }
+
+        .profile-box h2 {
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .profile-box p {
+            margin-bottom: 20px;
+            color: #657384;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 16px;
+        }
+
+        .profile-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .profile-box textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font: inherit;
+            resize: vertical;
+        }
+
+        .add-class-btn {
+            margin-bottom: 16px;
+            padding: 10px 16px;
+            border: 1px solid #007bff;
+            border-radius: 8px;
+            background: #fff;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        .class-entry {
+            margin-bottom: 20px;
+            padding: 18px;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            background: #f8fbff;
+        }
+
+        .class-entry h3 {
+            margin: 0;
+            color: #12304a;
+        }
+
+        .class-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .remove-class-btn {
+            padding: 7px 10px;
+            border: 1px solid #c62828;
+            border-radius: 7px;
+            background: #fff;
+            color: #c62828;
+            cursor: pointer;
+        }
+
+        .remove-class-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.45;
+        }
+
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -180,6 +271,89 @@
         .dashboard-section h3 {
             margin-bottom: 12px;
             color: #12304a;
+        }
+
+        .attendance-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            align-items: end;
+            gap: 16px;
+            padding: 18px;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            background: #f8fbff;
+        }
+
+        .attendance-form .submit-btn {
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .attendance-message {
+            min-height: 20px;
+            margin-top: 10px;
+            color: #237a45;
+            font-weight: 600;
+        }
+
+        .attendance-legend {
+            margin: 12px 0;
+            color: #526273;
+        }
+
+        .monthly-attendance-section .attendance-table td:last-child {
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .monthly-attendance-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .monthly-attendance-header h3 { margin-bottom: 0; }
+        .close-attendance-btn, .open-attendance-btn { padding: 8px 14px; border: 1px solid #1769aa; border-radius: 8px; background: #fff; color: #1769aa; cursor: pointer; }
+        .open-attendance-btn { display: none; margin-top: 12px; }
+        .monthly-attendance-section.closed #monthlyAttendanceTable { display: none; }
+        .monthly-attendance-section.closed .close-attendance-btn { display: none; }
+        .monthly-attendance-section.closed .open-attendance-btn { display: inline-block; }
+
+        .attendance-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(72px, 1fr));
+            gap: 8px;
+        }
+
+        .attendance-calendar-header {
+            padding: 8px;
+            color: #526273;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .attendance-day {
+            min-height: 74px;
+            padding: 10px;
+            border: 1px solid #dce5ef;
+            border-radius: 8px;
+            background: #f8fbff;
+            text-align: center;
+        }
+
+        .attendance-day-date {
+            display: block;
+            margin-bottom: 8px;
+            color: #526273;
+            font-size: 0.85rem;
+        }
+
+        .attendance-day-status {
+            display: block;
+            color: #1769aa;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .attendance-day-empty {
+            min-height: 74px;
+            border: 1px solid transparent;
         }
 
         .details-table,
@@ -261,6 +435,22 @@
                 padding: 22px 16px;
                 overflow-x: auto;
             }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-grid .full-width {
+                grid-column: auto;
+            }
+
+            .attendance-form {
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-form .submit-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -335,7 +525,29 @@
         <section id="dashboard" class="dashboard" aria-live="polite">
             <div class="dashboard-header">
                 <h2>Student Dashboard</h2>
-                <button id="logoutButton" class="logout-btn" type="button">Log out</button>
+                <div class="dashboard-actions"><button id="editProfileButton" class="edit-btn" type="button">Edit Student Details</button><button id="logoutButton" class="logout-btn" type="button">Log out</button></div>
+            </div>
+            <div class="dashboard-section attendance-entry-section">
+                <h3>Today's Attendance</h3>
+                <form id="attendanceForm" class="attendance-form">
+                    <div><label for="attendanceDate">Date</label><input id="attendanceDate" type="date" required></div>
+                    <div><label for="attendanceStatus">Class Attendance</label><select id="attendanceStatus" required><option value="">Select status</option><option value="present">Present</option><option value="absent">Absent</option></select></div>
+                    <button type="submit" class="submit-btn">Submit Attendance</button>
+                </form>
+                <p id="attendanceMessage" class="attendance-message" aria-live="polite"></p>
+            </div>
+            <div class="dashboard-section monthly-attendance-section">
+                <div class="monthly-attendance-header"><h3>Monthly Attendance</h3><button id="closeMonthlyAttendance" class="close-attendance-btn" type="button">Close Table</button></div>
+                <div id="monthlyAttendanceContent">
+                    <form id="monthlyAttendanceForm" class="attendance-form">
+                        <div><label for="attendanceMonth">Month</label><select id="attendanceMonth" required><option value="">Select month</option></select></div>
+                        <div><label for="attendanceYear">Year</label><select id="attendanceYear" required><option value="">Select year</option></select></div>
+                        <button type="submit" class="submit-btn">Display Attendance</button>
+                    </form>
+                    <p class="attendance-legend"><strong>Note:</strong> P = Present, A = Absent</p>
+                    <div id="monthlyAttendanceTable" class="attendance-calendar" aria-live="polite"></div>
+                </div>
+                <button id="openMonthlyAttendance" class="open-attendance-btn" type="button">Show Attendance Table</button>
             </div>
             <div class="dashboard-section">
                 <h3>Student Details</h3>
@@ -354,6 +566,14 @@
                 <table class="details-table">
                     <thead><tr><th>Subject</th><th>Score</th></tr></thead>
                     <tbody id="subjectsTable"></tbody>
+                </table>
+            </div>
+
+            <div class="dashboard-section">
+                <h3>Class Records</h3>
+                <table class="details-table">
+                    <thead><tr><th>Class</th><th>Attendance</th><th>Subjects</th></tr></thead>
+                    <tbody id="classRecordsTable"></tbody>
                 </table>
             </div>
 
@@ -376,6 +596,20 @@
                 </table>
             </div>
         </section>
+
+        <section id="profileBox" class="profile-box" aria-live="polite">
+            <h2>Complete Student Profile</h2>
+            <p>Please fill in your student information before entering the dashboard.</p>
+            <form id="profileForm">
+                <div class="profile-grid">
+                    <div><label for="profileId">ID Card Number</label><input id="profileId" required></div>
+                    <div><label for="profileName">Name</label><input id="profileName" required></div>
+                </div>
+                <button id="addClassButton" class="add-class-btn" type="button">Add One More Class</button>
+                <div id="classEntries"></div>
+                <button type="submit" class="submit-btn">Save Profile and Open Dashboard</button>
+            </form>
+        </section>
     </div>
 
     <script>
@@ -397,20 +631,189 @@
         });
 
         const dashboard = document.getElementById("dashboard");
+        const profileBox = document.getElementById("profileBox");
+        let pendingStudent = null;
+        let activeStudent = null;
+
+        const defaultAttendanceReport = [
+            { month: "January", present: 22, absent: 1, rate: "96%" },
+            { month: "February", present: 20, absent: 2, rate: "91%" },
+            { month: "March", present: 21, absent: 1, rate: "95%" }
+        ];
+
+        const today = () => new Date().toISOString().slice(0, 10);
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthSelect = document.getElementById("attendanceMonth");
+        const yearSelect = document.getElementById("attendanceYear");
+
+        monthNames.forEach((month, index) => {
+            monthSelect.insertAdjacentHTML("beforeend", `<option value="${index}">${month}</option>`);
+        });
+        for (let year = 2000; year <= 2100; year += 1) {
+            yearSelect.insertAdjacentHTML("beforeend", `<option value="${year}">${year}</option>`);
+        }
+        const getAttendanceStats = (student) => {
+            const entries = student.attendanceEntries || {};
+            const statuses = Object.values(entries);
+            return {
+                present: statuses.filter((status) => status === "present").length,
+                total: statuses.length
+            };
+        };
+
+        const renderAttendanceReport = (student, year) => {
+            const rows = monthNames.map((month, monthIndex) => {
+                const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+                let presentDays = 0;
+                for (let day = 1; day <= daysInMonth; day += 1) {
+                    const date = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                    if (student.attendanceEntries[date] === "present") presentDays += 1;
+                }
+                const absentDays = daysInMonth - presentDays;
+                const percentage = Math.round((presentDays / daysInMonth) * 100);
+                return `<tr><td>${month} ${year}</td><td>${presentDays}</td><td>${absentDays}</td><td>${percentage}%</td></tr>`;
+            });
+            document.getElementById("attendanceTable").innerHTML = rows.join("");
+        };
+
+        yearSelect.addEventListener("change", () => {
+            if (activeStudent && yearSelect.value) {
+                renderAttendanceReport(activeStudent, Number(yearSelect.value));
+            }
+        });
+
+        const monthlyAttendanceSection = document.querySelector(".monthly-attendance-section");
+        document.getElementById("closeMonthlyAttendance").addEventListener("click", () => {
+            monthlyAttendanceSection.classList.add("closed");
+        });
+        document.getElementById("openMonthlyAttendance").addEventListener("click", () => {
+            monthlyAttendanceSection.classList.remove("closed");
+        });
+
+        const displayMonthlyAttendance = () => {
+            const month = Number(monthSelect.value);
+            const year = Number(yearSelect.value);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const cells = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => `<div class="attendance-calendar-header">${day}</div>`);
+            const firstDay = new Date(year, month, 1).getDay();
+
+            for (let blank = 0; blank < firstDay; blank += 1) {
+                cells.push(`<div class="attendance-day attendance-day-empty" aria-hidden="true"></div>`);
+            }
+
+            let presentDays = 0;
+            for (let day = 1; day <= daysInMonth; day += 1) {
+                const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const status = activeStudent.attendanceEntries[date] === "present" ? "P" : "A";
+                if (status === "P") presentDays += 1;
+                const monthDay = `${monthNames[month].slice(0, 3)} - ${String(day).padStart(2, "0")}`;
+                cells.push(`<div class="attendance-day"><span class="attendance-day-date">${monthDay}</span><span class="attendance-day-status">${status}</span></div>`);
+            }
+
+            document.getElementById("monthlyAttendanceTable").innerHTML = cells.join("");
+            const monthlyPercentage = Math.round((presentDays / daysInMonth) * 100);
+            document.getElementById("studentAttendance").textContent = `${monthlyPercentage}%`;
+            document.getElementById("attendanceMessage").textContent = `${monthNames[month]} ${year}: ${presentDays} of ${daysInMonth} days present (${monthlyPercentage}%).`;
+        };
+
+        const classEntries = document.getElementById("classEntries");
+        const createClassEntry = (record = {}, number = classEntries.children.length + 1) => {
+            const entry = document.createElement("div");
+            entry.className = "class-entry";
+            entry.innerHTML = `<div class="class-entry-header"><h3>Class ${number}</h3><button class="remove-class-btn" type="button">Remove This Class</button></div><div class="profile-grid">
+                <div><label>Class Name</label><input class="class-name" placeholder="Example: 10-A" value="${record.className || ""}" required></div>
+                <div><label>Attendance</label><input class="class-attendance" placeholder="Example: 92%" value="${record.attendance || ""}" required></div>
+                <div><label>Maths Score</label><input class="class-maths" type="number" min="0" max="100" value="${record.subjects?.[0]?.score || ""}" required></div>
+                <div><label>Science Score</label><input class="class-science" type="number" min="0" max="100" value="${record.subjects?.[1]?.score || ""}" required></div>
+                <div><label>English Score</label><input class="class-english" type="number" min="0" max="100" value="${record.subjects?.[2]?.score || ""}" required></div>
+                <div><label>Communication</label><input class="class-communication" value="${record.skills?.[0]?.level || ""}" required></div>
+                <div><label>Leadership</label><input class="class-leadership" value="${record.skills?.[1]?.level || ""}" required></div>
+                <div><label>Team Work</label><input class="class-teamwork" value="${record.skills?.[2]?.level || ""}" required></div>
+                <div class="full-width"><label>Talents &amp; Achievements</label><textarea class="class-achievements" placeholder="Enter one achievement per line" required>${record.achievements?.join("\n") || ""}</textarea></div>
+            </div>`;
+            classEntries.appendChild(entry);
+            entry.querySelector(".remove-class-btn").addEventListener("click", () => {
+                if (classEntries.children.length === 1) return;
+                entry.remove();
+                Array.from(classEntries.children).forEach((item, index) => {
+                    item.querySelector("h3").textContent = `Class ${index + 1}`;
+                });
+                classEntries.querySelector(".remove-class-btn").disabled = true;
+            });
+            classEntries.querySelectorAll(".remove-class-btn").forEach((button) => {
+                button.disabled = classEntries.children.length === 1;
+            });
+        };
+
+        const collectClassRecords = () => Array.from(classEntries.querySelectorAll(".class-entry")).map((entry) => ({
+            className: entry.querySelector(".class-name").value.trim(),
+            attendance: entry.querySelector(".class-attendance").value.trim(),
+            subjects: [{ name: "Maths", score: Number(entry.querySelector(".class-maths").value) }, { name: "Science", score: Number(entry.querySelector(".class-science").value) }, { name: "English", score: Number(entry.querySelector(".class-english").value) }],
+            skills: [{ name: "Communication", level: entry.querySelector(".class-communication").value.trim() }, { name: "Leadership", level: entry.querySelector(".class-leadership").value.trim() }, { name: "Team Work", level: entry.querySelector(".class-teamwork").value.trim() }],
+            achievements: entry.querySelector(".class-achievements").value.split("\n").map((item) => item.trim()).filter(Boolean)
+        }));
+
+        createClassEntry();
+        document.getElementById("addClassButton").addEventListener("click", () => createClassEntry());
 
         const showDashboard = (student) => {
+            activeStudent = { ...student, attendanceStats: getAttendanceStats(student), attendanceEntries: student.attendanceEntries || {} };
+            student = activeStudent;
+            const records = student.classRecords?.length ? student.classRecords : [{ className: student.className, attendance: student.attendance, subjects: student.subjects, skills: student.skills, achievements: student.achievements }];
+            const firstRecord = records[0];
             document.getElementById("studentId").textContent = student.id;
             document.getElementById("studentName").textContent = student.name;
-            document.getElementById("studentClass").textContent = student.className;
-            document.getElementById("studentAttendance").textContent = student.attendance;
-            document.getElementById("subjectsTable").innerHTML = student.subjects.map((subject) => `<tr><td>${subject.name}</td><td>${subject.score}</td></tr>`).join("");
-            document.getElementById("skillsList").innerHTML = student.skills.map((skill) => `<li>${skill.name}: ${skill.level}</li>`).join("");
-            document.getElementById("achievementsList").innerHTML = student.achievements.map((achievement) => `<li>${achievement}</li>`).join("");
-            document.getElementById("attendanceTable").innerHTML = student.attendanceReport.map((report) => `<tr><td>${report.month}</td><td>${report.present}</td><td>${report.absent}</td><td>${report.rate}</td></tr>`).join("");
+            document.getElementById("studentClass").textContent = records.map((record) => record.className).join(", ");
+            const percentage = student.attendanceStats.total ? Math.round((student.attendanceStats.present / student.attendanceStats.total) * 100) : 0;
+            document.getElementById("studentAttendance").textContent = `${percentage}%`;
+            document.getElementById("subjectsTable").innerHTML = firstRecord.subjects.map((subject) => `<tr><td>${subject.name}</td><td>${subject.score}</td></tr>`).join("");
+            document.getElementById("classRecordsTable").innerHTML = records.map((record) => `<tr><td>${record.className}</td><td>${record.attendance}</td><td>${record.subjects.map((subject) => `${subject.name}: ${subject.score}`).join(", ")}</td></tr>`).join("");
+            document.getElementById("skillsList").innerHTML = firstRecord.skills.map((skill) => `<li>${skill.name}: ${skill.level}</li>`).join("");
+            document.getElementById("achievementsList").innerHTML = firstRecord.achievements.map((achievement) => `<li>${achievement}</li>`).join("");
+            renderAttendanceReport(student, new Date().getFullYear());
             document.querySelector(".auth-box").style.display = "none";
             document.querySelector(".brand").style.display = "none";
+            profileBox.classList.remove("visible");
             dashboard.classList.add("visible");
+            document.getElementById("attendanceDate").value = today();
+            document.getElementById("attendanceStatus").value = student.attendanceEntries[today()] || "";
+            yearSelect.value = String(new Date().getFullYear());
+            renderAttendanceReport(student, Number(yearSelect.value));
         };
+
+        document.getElementById("attendanceDate").addEventListener("change", (event) => {
+            document.getElementById("attendanceStatus").value = activeStudent?.attendanceEntries?.[event.target.value] || "";
+        });
+
+        document.getElementById("attendanceForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const date = document.getElementById("attendanceDate").value;
+            const status = document.getElementById("attendanceStatus").value;
+            const previousStatus = activeStudent.attendanceEntries[date];
+            const stats = { ...activeStudent.attendanceStats };
+
+            if (previousStatus !== status) {
+                if (previousStatus === "present") stats.present -= 1;
+                if (!previousStatus) stats.total += 1;
+                if (status === "present") stats.present += 1;
+            }
+
+            activeStudent.attendanceEntries[date] = status;
+            activeStudent.attendanceStats = stats;
+            activeStudent.attendance = `${Math.round((stats.present / stats.total) * 100)}%`;
+            localStorage.setItem("studentAccount", JSON.stringify(activeStudent));
+            document.getElementById("studentAttendance").textContent = activeStudent.attendance;
+            document.getElementById("attendanceMessage").textContent = `Attendance for ${date} submitted as ${status}. Total attendance: ${activeStudent.attendance}`;
+            monthSelect.value = String(Number(date.slice(5, 7)) - 1);
+            yearSelect.value = date.slice(0, 4);
+            displayMonthlyAttendance();
+            renderAttendanceReport(activeStudent, Number(date.slice(0, 4)));
+        });
+
+        document.getElementById("monthlyAttendanceForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            displayMonthlyAttendance();
+        });
 
         document.getElementById("loginForm").addEventListener("submit", (event) => {
             event.preventDefault();
@@ -424,14 +827,61 @@
                 return;
             }
 
-            message.textContent = "";
-            showDashboard({
+            const student = {
                 ...savedStudent,
                 subjects: savedStudent.subjects || [{ name: "Maths", score: 88 }, { name: "Science", score: 91 }, { name: "English", score: 85 }],
                 skills: savedStudent.skills || [{ name: "Communication", level: "Good" }, { name: "Leadership", level: "Excellent" }, { name: "Team Work", level: "Excellent" }],
                 achievements: savedStudent.achievements || ["Cricket Team Captain", "Science Fair Winner", "District Level Chess Player"],
-                attendanceReport: savedStudent.attendanceReport || [{ month: "January", present: 22, absent: 1, rate: "96%" }, { month: "February", present: 20, absent: 2, rate: "91%" }, { month: "March", present: 21, absent: 1, rate: "95%" }]
-            });
+                attendanceReport: savedStudent.attendanceReport || defaultAttendanceReport
+            };
+
+            message.textContent = "";
+            if (!savedStudent.profileCompleted) {
+                pendingStudent = student;
+                document.getElementById("profileId").value = student.id || "";
+                document.getElementById("profileName").value = student.name || "";
+                classEntries.innerHTML = "";
+                (student.classRecords || []).forEach((record, index) => createClassEntry(record, index + 1));
+                if (!classEntries.children.length) createClassEntry();
+                document.querySelector(".auth-box").style.display = "none";
+                document.querySelector(".brand").style.display = "none";
+                profileBox.classList.add("visible");
+                return;
+            }
+
+            showDashboard(student);
+        });
+
+        document.getElementById("profileForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const classRecords = collectClassRecords();
+            const student = {
+                ...pendingStudent,
+                id: document.getElementById("profileId").value.trim(),
+                name: document.getElementById("profileName").value.trim(),
+                className: classRecords[0].className,
+                attendance: classRecords[0].attendance,
+                attendanceStats: { present: 0, total: 0 },
+                attendanceEntries: {},
+                subjects: classRecords[0].subjects,
+                skills: classRecords[0].skills,
+                achievements: classRecords[0].achievements,
+                classRecords,
+                profileCompleted: true
+            };
+            localStorage.setItem("studentAccount", JSON.stringify(student));
+            showDashboard(student);
+        });
+
+        document.getElementById("editProfileButton").addEventListener("click", () => {
+            pendingStudent = activeStudent;
+            document.getElementById("profileId").value = activeStudent.id || "";
+            document.getElementById("profileName").value = activeStudent.name || "";
+            classEntries.innerHTML = "";
+            (activeStudent.classRecords || []).forEach((record, index) => createClassEntry(record, index + 1));
+            if (!classEntries.children.length) createClassEntry();
+            dashboard.classList.remove("visible");
+            profileBox.classList.add("visible");
         });
 
         document.getElementById("signupForm").addEventListener("submit", (event) => {
@@ -443,6 +893,8 @@
                 email: document.getElementById("signupEmail").value.trim().toLowerCase(),
                 password: document.getElementById("signupPassword").value,
                 attendance: "92%",
+                attendanceStats: { present: 0, total: 0 },
+                attendanceEntries: {},
                 subjects: [{ name: "Maths", score: 88 }, { name: "Science", score: 91 }, { name: "English", score: 85 }],
                 skills: [{ name: "Communication", level: "Good" }, { name: "Leadership", level: "Excellent" }, { name: "Team Work", level: "Excellent" }],
                 achievements: ["Cricket Team Captain", "Science Fair Winner", "District Level Chess Player"],
@@ -455,6 +907,7 @@
 
         document.getElementById("logoutButton").addEventListener("click", () => {
             dashboard.classList.remove("visible");
+            profileBox.classList.remove("visible");
             document.querySelector(".auth-box").style.display = "block";
             document.querySelector(".brand").style.display = "block";
             document.getElementById("loginForm").reset();
