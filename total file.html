@@ -148,6 +148,92 @@
             color: green;
         }
 
+        .dashboard {
+            display: none;
+            width: min(900px, 100%);
+            background: rgba(255, 255, 255, 0.94);
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .dashboard.visible {
+            display: block;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h2 {
+            color: #222;
+        }
+
+        .dashboard-section {
+            margin-top: 26px;
+        }
+
+        .dashboard-section h3 {
+            margin-bottom: 12px;
+            color: #12304a;
+        }
+
+        .details-table,
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f8fbff;
+        }
+
+        .details-table th,
+        .details-table td,
+        .attendance-table th,
+        .attendance-table td {
+            padding: 12px 14px;
+            border: 1px solid #dce5ef;
+            text-align: left;
+        }
+
+        .details-table th,
+        .attendance-table th {
+            background: #eaf3fb;
+            color: #12304a;
+        }
+
+        .details-table td,
+        .attendance-table td {
+            color: #34495e;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .dashboard-list {
+            margin: 0;
+            padding: 16px 16px 16px 34px;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            background: #f8fbff;
+            color: #34495e;
+            line-height: 1.8;
+        }
+
+        .logout-btn {
+            padding: 10px 16px;
+            border: 1px solid #007bff;
+            border-radius: 8px;
+            background: white;
+            color: #007bff;
+            cursor: pointer;
+        }
+
         @media (max-width: 800px) {
             .page {
                 flex-direction: column;
@@ -165,6 +251,15 @@
             .auth-box {
                 width: 100%;
                 max-width: 420px;
+            }
+
+            .list-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                padding: 22px 16px;
+                overflow-x: auto;
             }
         }
     </style>
@@ -236,6 +331,51 @@
 
             <p id="message" class="message"></p>
         </div>
+
+        <section id="dashboard" class="dashboard" aria-live="polite">
+            <div class="dashboard-header">
+                <h2>Student Dashboard</h2>
+                <button id="logoutButton" class="logout-btn" type="button">Log out</button>
+            </div>
+            <div class="dashboard-section">
+                <h3>Student Details</h3>
+                <table class="details-table">
+                    <tbody>
+                        <tr><th>ID</th><td id="studentId">-</td></tr>
+                        <tr><th>Name</th><td id="studentName">-</td></tr>
+                        <tr><th>Class</th><td id="studentClass">-</td></tr>
+                        <tr><th>Attendance</th><td id="studentAttendance">-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="dashboard-section">
+                <h3>Academic Subjects</h3>
+                <table class="details-table">
+                    <thead><tr><th>Subject</th><th>Score</th></tr></thead>
+                    <tbody id="subjectsTable"></tbody>
+                </table>
+            </div>
+
+            <div class="dashboard-section list-grid">
+                <div>
+                    <h3>Skills</h3>
+                    <ul id="skillsList" class="dashboard-list"></ul>
+                </div>
+                <div>
+                    <h3>Talents &amp; Achievements</h3>
+                    <ul id="achievementsList" class="dashboard-list"></ul>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h3>Attendance Report</h3>
+                <table class="attendance-table">
+                    <thead><tr><th>Month</th><th>Present</th><th>Absent</th><th>Attendance</th></tr></thead>
+                    <tbody id="attendanceTable"></tbody>
+                </table>
+            </div>
+        </section>
     </div>
 
     <script>
@@ -256,16 +396,68 @@
             });
         });
 
+        const dashboard = document.getElementById("dashboard");
+
+        const showDashboard = (student) => {
+            document.getElementById("studentId").textContent = student.id;
+            document.getElementById("studentName").textContent = student.name;
+            document.getElementById("studentClass").textContent = student.className;
+            document.getElementById("studentAttendance").textContent = student.attendance;
+            document.getElementById("subjectsTable").innerHTML = student.subjects.map((subject) => `<tr><td>${subject.name}</td><td>${subject.score}</td></tr>`).join("");
+            document.getElementById("skillsList").innerHTML = student.skills.map((skill) => `<li>${skill.name}: ${skill.level}</li>`).join("");
+            document.getElementById("achievementsList").innerHTML = student.achievements.map((achievement) => `<li>${achievement}</li>`).join("");
+            document.getElementById("attendanceTable").innerHTML = student.attendanceReport.map((report) => `<tr><td>${report.month}</td><td>${report.present}</td><td>${report.absent}</td><td>${report.rate}</td></tr>`).join("");
+            document.querySelector(".auth-box").style.display = "none";
+            document.querySelector(".brand").style.display = "none";
+            dashboard.classList.add("visible");
+        };
+
         document.getElementById("loginForm").addEventListener("submit", (event) => {
             event.preventDefault();
-            message.textContent = "Login successful!";
-            message.style.color = "green";
+            const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+            const password = document.getElementById("loginPassword").value;
+            const savedStudent = JSON.parse(localStorage.getItem("studentAccount") || "null");
+
+            if (!savedStudent || savedStudent.email !== email || savedStudent.password !== password) {
+                message.textContent = "Invalid email or password.";
+                message.style.color = "#c62828";
+                return;
+            }
+
+            message.textContent = "";
+            showDashboard({
+                ...savedStudent,
+                subjects: savedStudent.subjects || [{ name: "Maths", score: 88 }, { name: "Science", score: 91 }, { name: "English", score: 85 }],
+                skills: savedStudent.skills || [{ name: "Communication", level: "Good" }, { name: "Leadership", level: "Excellent" }, { name: "Team Work", level: "Excellent" }],
+                achievements: savedStudent.achievements || ["Cricket Team Captain", "Science Fair Winner", "District Level Chess Player"],
+                attendanceReport: savedStudent.attendanceReport || [{ month: "January", present: 22, absent: 1, rate: "96%" }, { month: "February", present: 20, absent: 2, rate: "91%" }, { month: "March", present: 21, absent: 1, rate: "95%" }]
+            });
         });
 
         document.getElementById("signupForm").addEventListener("submit", (event) => {
             event.preventDefault();
-            message.textContent = "Account created successfully!";
+            const student = {
+                id: document.getElementById("signupId").value.trim(),
+                name: document.getElementById("signupName").value.trim(),
+                className: document.getElementById("signupClass").value,
+                email: document.getElementById("signupEmail").value.trim().toLowerCase(),
+                password: document.getElementById("signupPassword").value,
+                attendance: "92%",
+                subjects: [{ name: "Maths", score: 88 }, { name: "Science", score: 91 }, { name: "English", score: 85 }],
+                skills: [{ name: "Communication", level: "Good" }, { name: "Leadership", level: "Excellent" }, { name: "Team Work", level: "Excellent" }],
+                achievements: ["Cricket Team Captain", "Science Fair Winner", "District Level Chess Player"],
+                attendanceReport: [{ month: "January", present: 22, absent: 1, rate: "96%" }, { month: "February", present: 20, absent: 2, rate: "91%" }, { month: "March", present: 21, absent: 1, rate: "95%" }]
+            };
+            localStorage.setItem("studentAccount", JSON.stringify(student));
+            message.textContent = "Account created successfully. You can now log in.";
             message.style.color = "green";
+        });
+
+        document.getElementById("logoutButton").addEventListener("click", () => {
+            dashboard.classList.remove("visible");
+            document.querySelector(".auth-box").style.display = "block";
+            document.querySelector(".brand").style.display = "block";
+            document.getElementById("loginForm").reset();
         });
     </script>
 </body>
